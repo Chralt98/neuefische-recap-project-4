@@ -24,7 +24,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>{children}</body>
+      {/* min-h-screen: body is at least full viewport height */}
+      {/* bg-background: uses the shadcn theme background color */}
+      {/* text-foreground: uses the shadcn theme text color */}
+      {/* antialiased: smoother font rendering */}
+      <body className="min-h-screen bg-background text-foreground antialiased">
+        {/* mx-auto: centers the container horizontally */}
+        {/* max-w-7xl: caps width at 1280px on large screens */}
+        {/* px-4 sm:px-6 lg:px-8: horizontal padding grows with screen size */}
+        {/* py-6: vertical padding top and bottom */}
+        <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+          {children}
+        </main>
+      </body>
     </html>
   );
 }

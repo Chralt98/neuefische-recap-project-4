@@ -54,13 +54,18 @@ export default async function AuctionList({
   });
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 p-4">
+    // grid: CSS grid layout
+    // gap-4: 16px gap between grid items
+    // sm:grid-cols-2: 2 columns at 640px+
+    // lg:grid-cols-3: 3 columns at 1024px+
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {auctions.map((auction) => (
         <Card key={auction.id}>
           <CardHeader>
             <CardTitle>{auction.title}</CardTitle>
             <CardDescription>Sold by {auction.seller}</CardDescription>
           </CardHeader>
+          {/* grid gap-2: stack items vertically with 8px spacing */}
           <CardContent className="grid gap-2">
             <p>Status: {auction.status}</p>
             <p>Current Price: {auction.currentPrice}</p>

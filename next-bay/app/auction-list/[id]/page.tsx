@@ -3,6 +3,7 @@ import {
   getAuctionOffers,
 } from "@/lib/services/auctionsService";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import {
   Card,
   CardHeader,
@@ -24,12 +25,19 @@ export default async function AuctionDetailPage({
   const offers = await getAuctionOffers(id);
 
   return (
-    <div className="p-4 grid gap-4 max-w-2xl">
+    // grid: CSS grid layout
+    // gap-4: 16px gap between grid items
+    // max-w-2xl: caps width at 672px
+    // mx-auto: centers horizontally
+    // w-full: takes full available width up to max-w
+    <div className="grid gap-4 max-w-2xl mx-auto w-full">
+      <Link href="/auction-list">&larr; Back to auctions</Link>
       <Card>
         <CardHeader>
           <CardTitle>{auction.title}</CardTitle>
           <CardDescription>Sold by {auction.seller}</CardDescription>
         </CardHeader>
+        {/* grid gap-2: stack items vertically with 8px spacing */}
         <CardContent className="grid gap-2">
           <p>Status: {auction.status}</p>
           <p>Description: {auction.description}</p>
@@ -47,8 +55,10 @@ export default async function AuctionDetailPage({
         </CardHeader>
         <CardContent>
           {offers.length > 0 ? (
+            // grid gap-3: stack offer items with 12px spacing
             <ul className="grid gap-3">
               {offers.map((offer) => (
+                // flex justify-between: bidder left, amount right
                 <li key={offer.id} className="flex justify-between">
                   <span>{offer.bidder}</span>
                   <span>{offer.amount}</span>
