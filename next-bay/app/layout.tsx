@@ -23,7 +23,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html
+      lang="en"
+      className={`dark ${geistSans.variable} ${geistMono.variable}`}
+    >
       {/* min-h-screen: body is at least full viewport height */}
       {/* bg-background: uses the shadcn theme background color */}
       {/* text-foreground: uses the shadcn theme text color */}
