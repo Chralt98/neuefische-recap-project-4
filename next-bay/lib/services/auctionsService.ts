@@ -37,6 +37,14 @@ export type ApiResponse<T> = {
   };
 };
 
+export type Offer = {
+  id: string;
+  amount: number;
+  createdAt: Date;
+  bidder: string;
+  auctionId: string;
+};
+
 export async function getAuctions(
   filter: QueryAuctionsOptions,
 ): Promise<Auction[]> {
@@ -63,8 +71,17 @@ export async function getAuctions(
   return data;
 }
 
-export async function getAuctionById(id: string): Promise<Auction> {
+export async function getAuctionById(id: string): Promise<Auction | null> {
   const response = await fetch(`${process.env.DARKBAY_API_URL}/auctions/${id}`);
+
+  if (response.status === 404) {
+    return null; // Not found
+  }
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch auction: ${response.statusText}`);
+  }
+
   const auction = (await response.json()) as Auction;
   return auction;
 }
@@ -86,6 +103,19 @@ export async function createAuction(
   }
   const createdAuction = (await response.json()) as Auction;
   return createdAuction;
+}
+
+export async function getAuctionOffers(auctionId: string): Promise<Offer[]> {
+  const response = await fetch(
+    `${process.env.DARKBAY_API_URL}/auctions/${auctionId}/offers`,
+  );
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch offers: ${response.statusText}`);
+  }
+
+  const offers = (await response.json()) as Offer[];
+  return offers;
 }
 
 // Design question: Why route every backend call through one server-side module instead of calling fetch inside each component? Think about where your API URL and, later, your auth token need to live.
