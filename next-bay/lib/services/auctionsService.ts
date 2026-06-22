@@ -87,3 +87,11 @@ export async function createAuction(
   const createdAuction = (await response.json()) as Auction;
   return createdAuction;
 }
+
+// Design question: Why route every backend call through one server-side module instead of calling fetch inside each component? Think about where your API URL and, later, your auth token need to live.
+// Answer: Centralizing all backend calls in one module has several advantages:
+// 1. Single Source of Truth: It provides a single source of truth for all API interactions, making it easier to manage and update the API URL or any common headers (like auth tokens) in one place.
+// 2. Reusability: It promotes code reusability, as multiple components can import and use the same functions to interact with the backend, reducing code duplication.
+// 3. Error Handling: It allows for consistent error handling across all API calls, as you can implement common error handling logic within this module.
+// 4. Testing: It makes testing easier, as you can mock the functions in this module during unit tests without having to mock fetch calls in every component.
+// 5. Separation of Concerns: It keeps the components focused on rendering UI and managing state, while the service module handles all data fetching and business logic related to API interactions.
