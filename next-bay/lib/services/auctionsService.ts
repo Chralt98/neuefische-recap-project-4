@@ -27,14 +27,29 @@ export type QueryAuctionsOptions = {
   limit?: number;
 };
 
-export function getAuctions(filter: QueryAuctionsOptions): Auction[] {
+export async function getAuctions(
+  filter: QueryAuctionsOptions,
+): Promise<Auction[]> {
+  const response = await fetch(
+    `${process.env.DARKBAY_API_URL}/auctions?page=${1}&limit=${10}`,
+  );
+
+  console.log("Response: ", response);
   return [];
 }
 
-export function getAuctionById(id: string): Auction {
-  return auction;
-}
+getAuctions({
+  status: undefined,
+  minPrice: undefined,
+  maxPrice: undefined,
+  page: undefined,
+  limit: undefined,
+});
 
-export function createAuction(dto: CreateAuction): Auction {
-  return auction;
-}
+// export async function getAuctionById(id: string): Promise<Auction> {
+//   return auction;
+// }
+
+// export async function createAuction(dto: CreateAuction): Promise<Auction> {
+//   return auction;
+// }
