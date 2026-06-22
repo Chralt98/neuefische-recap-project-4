@@ -3,6 +3,13 @@ import {
   getAuctionOffers,
 } from "@/lib/services/auctionsService";
 import { notFound } from "next/navigation";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 
 export default async function AuctionDetailPage({
   params,
@@ -17,39 +24,42 @@ export default async function AuctionDetailPage({
   const offers = await getAuctionOffers(id);
 
   return (
-    <div>
-      {auction ? (
-        <div>
-          <h1>Auction: {auction.title}</h1>
-          <p>ID: {auction.id}</p>
+    <div className="p-4 grid gap-4 max-w-2xl">
+      <Card>
+        <CardHeader>
+          <CardTitle>{auction.title}</CardTitle>
+          <CardDescription>Sold by {auction.seller}</CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-2">
           <p>Status: {auction.status}</p>
           <p>Description: {auction.description}</p>
-          <p>End Date: {auction.endDate.toString()}</p>
-          <p>Starting Price: {auction.startingPrice}</p>
           <p>Current Price: {auction.currentPrice}</p>
-          <p>Seller: {auction.seller}</p>
+          <p>Starting Price: {auction.startingPrice}</p>
+          <p>End Date: {auction.endDate.toString()}</p>
           <p>Created At: {auction.createdAt.toString()}</p>
-          <h2>Offers:</h2>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Offers</CardTitle>
+          <CardDescription>{offers.length} bid(s)</CardDescription>
+        </CardHeader>
+        <CardContent>
           {offers.length > 0 ? (
-            <ul>
+            <ul className="grid gap-3">
               {offers.map((offer) => (
-                <li key={offer.id}>
-                  <h5>Offer ID: {offer.id}</h5>
-                  <p>Bidder: {offer.bidder}</p>
-                  <p>Amount: {offer.amount}</p>
-                  <p>Created At: {offer.createdAt.toString()}</p>
+                <li key={offer.id} className="flex justify-between">
+                  <span>{offer.bidder}</span>
+                  <span>{offer.amount}</span>
                 </li>
               ))}
             </ul>
           ) : (
             <p>No offers yet.</p>
           )}
-        </div>
-      ) : (
-        <div>
-          <h1>Auction not found</h1>
-        </div>
-      )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

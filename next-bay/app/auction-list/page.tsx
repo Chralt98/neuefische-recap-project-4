@@ -1,5 +1,13 @@
 import { getAuctions } from "@/lib/services/auctionsService";
 import Link from "next/link";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 
 /*
 This is about where you store UI state like the current page number or filter selections.
@@ -46,20 +54,23 @@ export default async function AuctionList({
   });
 
   return (
-    <div>
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 p-4">
       {auctions.map((auction) => (
-        <div key={auction.id}>
-          <h1>Auction: {auction.title}</h1>
-          <p>ID: {auction.id}</p>
-          <p>Status: {auction.status}</p>
-          <p>Description: {auction.description}</p>
-          <p>End Date: {auction.endDate.toString()}</p>
-          <p>Starting Price: {auction.startingPrice}</p>
-          <p>Current Price: {auction.currentPrice}</p>
-          <p>Seller: {auction.seller}</p>
-          <p>Created At: {auction.createdAt.toString()}</p>
-          <Link href={`/auction-list/${auction.id}`}>View Details</Link>
-        </div>
+        <Card key={auction.id}>
+          <CardHeader>
+            <CardTitle>{auction.title}</CardTitle>
+            <CardDescription>Sold by {auction.seller}</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-2">
+            <p>Status: {auction.status}</p>
+            <p>Current Price: {auction.currentPrice}</p>
+            <p>Starting Price: {auction.startingPrice}</p>
+            <p>End Date: {auction.endDate.toString()}</p>
+          </CardContent>
+          <CardFooter>
+            <Link href={`/auction-list/${auction.id}`}>View Details</Link>
+          </CardFooter>
+        </Card>
       ))}
     </div>
   );
