@@ -2,6 +2,7 @@ import {
   getAuctionById,
   getAuctionOffers,
 } from "@/lib/services/auctionsService";
+import { notFound } from "next/navigation";
 
 export default async function AuctionDetailPage({
   params,
@@ -10,6 +11,9 @@ export default async function AuctionDetailPage({
 }) {
   const { id } = await params;
   const auction = await getAuctionById(id);
+
+  if (!auction) notFound();
+
   const offers = await getAuctionOffers(id);
 
   return (

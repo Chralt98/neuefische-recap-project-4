@@ -1,4 +1,5 @@
 import { getAuctions } from "@/lib/services/auctionsService";
+import Link from "next/link";
 
 /*
 This is about where you store UI state like the current page number or filter selections.
@@ -57,6 +58,7 @@ export default async function AuctionList({
           <p>Current Price: {auction.currentPrice}</p>
           <p>Seller: {auction.seller}</p>
           <p>Created At: {auction.createdAt.toString()}</p>
+          <Link href={`/auction-list/${auction.id}`}>View Details</Link>
         </div>
       ))}
     </div>
