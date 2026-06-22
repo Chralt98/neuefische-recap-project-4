@@ -1,0 +1,19 @@
+meta {
+  name: Get Bid History
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/auctions/:id/offers
+  body: none
+  auth: none
+}
+
+params:path {
+  id: a913fa3b-e503-4ab7-a830-98b99db97eb1
+}
+
+docs {
+  Public route. Returns every offer for the auction, highest amount first.
+}

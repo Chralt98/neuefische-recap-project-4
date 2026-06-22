@@ -1,0 +1,20 @@
+meta {
+  name: Get Auction By Id
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/auctions/:id
+  body: none
+  auth: none
+}
+
+params:path {
+  id: a913fa3b-e503-4ab7-a830-98b99db97eb1
+}
+
+docs {
+  Public route. Uses the `auctionId` saved by "Create Auction". An unknown id
+  returns 404; a malformed (non-UUID) id returns 400.
+}

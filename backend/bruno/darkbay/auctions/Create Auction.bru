@@ -1,0 +1,29 @@
+meta {
+  name: Create Auction
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/auctions
+  body: json
+  auth: none
+}
+
+headers {
+  ~Authorization: Bearer {{token}}
+}
+
+body:json {
+  {
+    "title": "Vintage cyberdeck",
+    "description": "Ono-Sendai Cyberspace 7. Lightly used, jacks intact.",
+    "startingPrice": 250
+  }
+}
+
+docs {
+  Protected route. Requires the seller's JWT. The `seller` is taken from the
+  token, never the body. Omitting `endDate` defaults the auction to close three
+  days from now. The new auction id is saved to the `auctionId` variable.
+}

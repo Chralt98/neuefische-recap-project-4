@@ -1,0 +1,25 @@
+meta {
+  name: List Auctions Filtered
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/auctions?status=open&min-price=100&max-price=1000&page=1&limit=2
+  body: none
+  auth: none
+}
+
+params:query {
+  status: open
+  min-price: 100
+  max-price: 1000
+  page: 1
+  limit: 2
+}
+
+docs {
+  Demonstrates filtering. `status` is open or closed (derived from the end
+  date). `min-price` and `max-price` bound the current price. Remove any
+  parameter to widen the result set.
+}

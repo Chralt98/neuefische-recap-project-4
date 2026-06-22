@@ -1,0 +1,22 @@
+meta {
+  name: Register Seller
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "felix",
+    "password": "1234"
+  }
+}
+
+docs {
+  Creates the seller account. Safe to re-run: a duplicate username returns 409.
+}

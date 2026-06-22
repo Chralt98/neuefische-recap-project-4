@@ -1,0 +1,23 @@
+meta {
+  name: Register Bidder
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "ac1dburn",
+    "password": "mess-with-the-best"
+  }
+}
+
+docs {
+  Creates a second account used to bid. A seller may not bid on their own
+  auction, so the bidder must be a different user.
+}

@@ -1,0 +1,21 @@
+meta {
+  name: List Auctions
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/auctions?page=1&limit=10
+  body: none
+  auth: none
+}
+
+params:query {
+  page: 1
+  limit: 10
+}
+
+docs {
+  Public route. Returns a paginated envelope: `{ data, meta }` where meta holds
+  page, limit, total and totalPages. Sorted by end date, most recent first.
+}

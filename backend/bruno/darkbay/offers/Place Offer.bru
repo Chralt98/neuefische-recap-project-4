@@ -1,0 +1,27 @@
+meta {
+  name: Place Offer
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/auctions/:id/offers
+  body: json
+  auth: none
+}
+
+params:path {
+  id: 35bd4fb0-9667-4132-94ab-01886dfa7716
+}
+
+body:json {
+  {
+    "amount": 123
+  }
+}
+
+docs {
+  Protected route, authenticated as the bidder. The first bid must meet the
+  starting price; later bids must strictly exceed the current price. Rejections
+  return 409 (too low or auction closed) or 403 (bidding on your own auction).
+}

@@ -1,0 +1,29 @@
+meta {
+  name: Login Bidder
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "ac1dburn",
+    "password": "mess-with-the-best"
+  }
+}
+
+script:post-response {
+  if (res.getStatus() === 200) {
+    bru.setEnvVar("bidderToken", res.getBody().access_token);
+  }
+}
+
+docs {
+  Logs the bidder in and stores the JWT in the `bidderToken` environment
+  variable, which "Place Offer" reads automatically.
+}
