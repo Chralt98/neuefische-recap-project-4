@@ -36,6 +36,29 @@ export async function registerAction(
   return { success: true, data: user };
 }
 
-// TODO: export async function loginAction(): Promise<AuthResponse> {}
+export async function loginAction(
+  username: string,
+  password: string,
+): Promise<ActionResult<AuthResponse>> {
+  const response = await fetch(`${process.env.DARKBAY_API_URL}/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username, password }),
+  });
 
-// TODO: export async function logoutAction() {}
+  if (response.status === 401) {
+    return { success: false, error: "Invalid username or password" };
+  }
+
+  if (!response.ok) {
+    throw new Error(`Failed to login: ${response.statusText}`);
+  }
+
+  const authResponse = (await response.json()) as AuthResponse;
+  return { success: true, data: authResponse };
+}
+
+// TODO
+export async function logoutAction() {}
