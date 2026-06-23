@@ -37,8 +37,7 @@ export default function LoginPage() {
       alert(result.error);
       return;
     }
-    // TODO: Get to page to indicate success. Store access token in cookie/local storage and use it for authenticated requests
-    router.push("/login");
+    router.push("/");
   };
 
   return (

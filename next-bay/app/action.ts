@@ -7,6 +7,7 @@ import {
 } from "@/lib/authActions";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export async function register(
   formData: FormData,
@@ -31,14 +32,23 @@ export async function login(formData: FormData): Promise<ActionResult<null>> {
     return { success: false, error: result.error };
   }
   const cookieStore = await cookies();
-  cookieStore.set("accessToken", result.data.accessToken, { httpOnly: true });
+  cookieStore.set("accessToken", result.data.accessToken, {
+    httpOnly: true,
+    path: "/",
+  });
   revalidatePath("/login");
   return { success: true, data: null };
 }
 
-export async function logout(): Promise<ActionResult<null>> {
+export async function logout(): Promise<void> {
   const cookieStore = await cookies();
-  cookieStore.delete("accessToken");
-  revalidatePath("/login");
-  return { success: true, data: null };
+  cookieStore.delete({ name: "accessToken", path: "/" });
+  revalidatePath("/");
+  redirect("/");
+}
+
+export async function isAuthenticated(): Promise<boolean> {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("accessToken")?.value;
+  return accessToken !== undefined;
 }
