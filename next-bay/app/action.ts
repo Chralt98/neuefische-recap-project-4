@@ -6,6 +6,7 @@ import {
   type ActionResult,
 } from "@/lib/authActions";
 import {
+  Auction,
   createAuction as createAuctionService,
   Offer,
   placeOffer,
@@ -67,7 +68,9 @@ export async function isAuthenticated(): Promise<boolean> {
   return accessToken !== undefined;
 }
 
-export async function createAuction(formData: FormData): Promise<void> {
+export async function createAuction(
+  formData: FormData,
+): Promise<ServiceResult<Auction>> {
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
   const startingPrice = parseFloat(formData.get("startingPrice") as string);
@@ -80,10 +83,11 @@ export async function createAuction(formData: FormData): Promise<void> {
     startingPrice,
     endDate,
   });
-  if (!result) {
-    throw new Error("Failed to create auction");
+  if (!result.success) {
+    return result;
   }
   revalidatePath("/auction-list");
+  redirect("/auction-list");
 }
 
 export async function placeBid(

@@ -46,13 +46,17 @@ export default async function AuctionList({
   searchParams: Promise<SearchParams>;
 }) {
   const params = await searchParams;
-  const auctions = await getAuctions({
+  const result = await getAuctions({
     status: params.status as "open" | "closed" | undefined,
     minPrice: params["min-price"] ? Number(params["min-price"]) : undefined,
     maxPrice: params["max-price"] ? Number(params["max-price"]) : undefined,
     page: params.page ? Number(params.page) : undefined,
     limit: params.limit ? Number(params.limit) : undefined,
   });
+  if (!result.success) {
+    throw new Error(result.error);
+  }
+  const auctions = result.data;
 
   return (
     <div>

@@ -19,11 +19,19 @@ export default async function AuctionDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const auction = await getAuctionById(id);
+  const auctionResult = await getAuctionById(id);
+  if (!auctionResult.success) {
+    throw new Error(auctionResult.error);
+  }
+  const auction = auctionResult.data;
 
   if (!auction) notFound();
 
-  const offers = await getAuctionOffers(id);
+  const result = await getAuctionOffers(id);
+  if (!result.success) {
+    throw new Error(`Failed to fetch offers: ${result.error}`);
+  }
+  const offers = result.data;
 
   return (
     // grid: CSS grid layout

@@ -53,7 +53,7 @@ export type ServiceResult<T> =
 
 export async function getAuctions(
   filter: QueryAuctionsOptions,
-): Promise<Auction[]> {
+): Promise<ServiceResult<Auction[]>> {
   const params = new URLSearchParams();
   if (filter.status) params.append("status", filter.status);
   if (filter.minPrice) params.append("min-price", filter.minPrice.toString());
@@ -64,51 +64,61 @@ export async function getAuctions(
   const response = await fetchAPI(`/auctions?${params.toString()}`, {});
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch auctions: ${response.statusText}`);
+    const error = await response.json();
+    return { success: false, error: error.message ?? "Failed to fetch auctions" };
   }
 
   const {
     data,
-    meta: { page, limit, total, totalPages },
   } = (await response.json()) as ApiResponse<Auction[]>;
 
-  return data;
+  return { success: true, data };
 }
 
-export async function getAuctionById(id: string): Promise<Auction | null> {
+export async function getAuctionById(id: string): Promise<ServiceResult<Auction | null>> {
   const response = await fetchAPI(`/auctions/${id}`, {});
   if (response.status === 404) {
-    return null; // Not found
+    return { success: true, data: null };
   }
   if (!response.ok) {
-    throw new Error(`Failed to fetch auction: ${response.statusText}`);
+    const error = await response.json();
+    return { success: false, error: error.message ?? "Failed to fetch auction" };
   }
 
   const auction = (await response.json()) as Auction;
-  return auction;
+  return { success: true, data: auction };
 }
 
-export async function createAuction(dto: CreateAuction): Promise<Auction> {
+export async function createAuction(
+  dto: CreateAuction,
+): Promise<ServiceResult<Auction>> {
   const response = await fetchAPI("/auctions", {
     body: JSON.stringify(dto),
     method: "POST",
   });
   if (!response.ok) {
-    throw new Error(`Failed to create auction: ${response.statusText}`);
+    const error = await response.json();
+    return {
+      success: false,
+      error: error.message ?? "Failed to create auction",
+    };
   }
   const createdAuction = (await response.json()) as Auction;
-  return createdAuction;
+  return { success: true, data: createdAuction };
 }
 
-export async function getAuctionOffers(auctionId: string): Promise<Offer[]> {
+export async function getAuctionOffers(
+  auctionId: string,
+): Promise<ServiceResult<Offer[]>> {
   const response = await fetchAPI(`/auctions/${auctionId}/offers`, {});
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch offers: ${response.statusText}`);
+    const error = await response.json();
+    return { success: false, error: error.message ?? "Failed to fetch offers" };
   }
 
   const offers = (await response.json()) as Offer[];
-  return offers;
+  return { success: true, data: offers };
 }
 
 export async function placeOffer(

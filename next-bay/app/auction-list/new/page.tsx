@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { createAuction } from "@/app/action";
 
@@ -28,8 +27,6 @@ export default function CreateAuctionPage() {
     formState: { errors },
   } = useForm<FormValues>();
 
-  const router = useRouter();
-
   const onSubmit = async (data: FormValues) => {
     const formData = new FormData();
     formData.append("title", data.title);
@@ -39,7 +36,6 @@ export default function CreateAuctionPage() {
       formData.append("endDate", new Date(data.endDate).toISOString());
     }
     await createAuction(formData);
-    router.push("/auction-list");
   };
 
   return (
