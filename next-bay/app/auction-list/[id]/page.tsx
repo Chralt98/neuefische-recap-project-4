@@ -12,6 +12,7 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
+import { isAuthenticated } from "@/app/action";
 
 export default async function AuctionDetailPage({
   params,
@@ -19,6 +20,7 @@ export default async function AuctionDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const isAuth = await isAuthenticated();
   const auctionResult = await getAuctionById(id);
   if (!auctionResult.success) {
     throw new Error(auctionResult.error);
@@ -57,12 +59,14 @@ export default async function AuctionDetailPage({
         </CardContent>
       </Card>
 
-      <Link
-        href={`/auction-list/${auction.id}/bid`}
-        className={buttonVariants({ variant: "outline", size: "lg" })}
-      >
-        Place a bid
-      </Link>
+      {isAuth && auction.status === "open" && (
+        <Link
+          href={`/auction-list/${auction.id}/bid`}
+          className={buttonVariants({ variant: "outline", size: "lg" })}
+        >
+          Place a bid
+        </Link>
+      )}
 
       <Card>
         <CardHeader>

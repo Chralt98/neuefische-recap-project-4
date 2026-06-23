@@ -9,6 +9,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
+import { isAuthenticated } from "../action";
 
 /*
 This is about where you store UI state like the current page number or filter selections.
@@ -46,6 +47,7 @@ export default async function AuctionList({
   searchParams: Promise<SearchParams>;
 }) {
   const params = await searchParams;
+  const isAuth = await isAuthenticated();
   const result = await getAuctions({
     status: params.status as "open" | "closed" | undefined,
     minPrice: params["min-price"] ? Number(params["min-price"]) : undefined,
@@ -60,12 +62,15 @@ export default async function AuctionList({
 
   return (
     <div>
-      <Link
-        href="/auction-list/new"
-        className={buttonVariants({ variant: "outline", size: "lg" })}
-      >
-        Create a new auction
-      </Link>
+      {isAuth && (
+        <Link
+          href="/auction-list/new"
+          className={buttonVariants({ variant: "outline", size: "lg" })}
+        >
+          Create a new auction
+        </Link>
+      )}
+
       <h1 className="text-2xl font-bold my-4">Auction List</h1>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {auctions.map((auction) => (

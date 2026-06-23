@@ -35,7 +35,11 @@ export default function CreateAuctionPage() {
     if (data.endDate) {
       formData.append("endDate", new Date(data.endDate).toISOString());
     }
-    await createAuction(formData);
+    const result = await createAuction(formData);
+    if (!result.success) {
+      alert(result.error);
+      return;
+    }
   };
 
   return (
