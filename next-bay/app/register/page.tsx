@@ -75,7 +75,7 @@ export default function RegisterPage() {
                 {...register("password", {
                   required: "Password is required",
                   minLength: {
-                    value: 8,
+                    value: 4,
                     message: "password must be at least 8 characters",
                   },
                   maxLength: {

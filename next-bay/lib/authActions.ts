@@ -56,7 +56,8 @@ export async function loginAction(
     throw new Error(`Failed to login: ${response.statusText}`);
   }
 
-  const authResponse = (await response.json()) as AuthResponse;
+  const json = await response.json();
+  const authResponse: AuthResponse = { accessToken: json.access_token };
   return { success: true, data: authResponse };
 }
 

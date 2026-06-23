@@ -37,6 +37,8 @@ export default function LoginPage() {
       alert(result.error);
       return;
     }
+    const { accessToken } = result.data;
+    console.log("Access Token: ", accessToken);
     // TODO: Get to page to indicate success. Store access token in cookie/local storage and use it for authenticated requests
     router.push("/login");
   };
@@ -76,7 +78,7 @@ export default function LoginPage() {
                 {...register("password", {
                   required: "Password is required",
                   minLength: {
-                    value: 8,
+                    value: 4,
                     message: "password must be at least 8 characters",
                   },
                   maxLength: {
