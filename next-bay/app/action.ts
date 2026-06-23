@@ -1,13 +1,12 @@
 "use server";
 
 import {
-  type AuthResponse,
   registerAction,
   loginAction,
   type ActionResult,
-  type UserResponse,
 } from "@/lib/authActions";
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 
 export async function register(
   formData: FormData,
@@ -31,7 +30,15 @@ export async function login(formData: FormData): Promise<ActionResult<null>> {
   if (!result.success) {
     return { success: false, error: result.error };
   }
-  // TODO: Store the access token in a cookie
+  const cookieStore = await cookies();
+  cookieStore.set("accessToken", result.data.accessToken, { httpOnly: true });
+  revalidatePath("/login");
+  return { success: true, data: null };
+}
+
+export async function logout(): Promise<ActionResult<null>> {
+  const cookieStore = await cookies();
+  cookieStore.delete("accessToken");
   revalidatePath("/login");
   return { success: true, data: null };
 }

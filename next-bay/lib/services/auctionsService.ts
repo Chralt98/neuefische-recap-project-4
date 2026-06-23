@@ -1,3 +1,5 @@
+import { fetchAPI } from "../fetchAPI";
+
 export type AuctionStatus = "open" | "closed";
 
 export type Auction = {
@@ -55,9 +57,7 @@ export async function getAuctions(
   if (filter.page) params.append("page", filter.page.toString());
   if (filter.limit) params.append("limit", filter.limit.toString());
 
-  const response = await fetch(
-    `${process.env.DARKBAY_API_URL}/auctions?${new URLSearchParams(params)}`,
-  );
+  const response = await fetchAPI(`/auctions?${params.toString()}`, {});
 
   if (!response.ok) {
     throw new Error(`Failed to fetch auctions: ${response.statusText}`);
@@ -72,12 +72,10 @@ export async function getAuctions(
 }
 
 export async function getAuctionById(id: string): Promise<Auction | null> {
-  const response = await fetch(`${process.env.DARKBAY_API_URL}/auctions/${id}`);
-
+  const response = await fetchAPI(`/auctions/${id}`, {});
   if (response.status === 404) {
     return null; // Not found
   }
-
   if (!response.ok) {
     throw new Error(`Failed to fetch auction: ${response.statusText}`);
   }
@@ -86,17 +84,10 @@ export async function getAuctionById(id: string): Promise<Auction | null> {
   return auction;
 }
 
-export async function createAuction(
-  dto: CreateAuction,
-  jwt_token: string,
-): Promise<Auction> {
-  const response = await fetch(`${process.env.DARKBAY_API_URL}/auctions`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${jwt_token}`,
-    },
+export async function createAuction(dto: CreateAuction): Promise<Auction> {
+  const response = await fetchAPI("/auctions", {
     body: JSON.stringify(dto),
+    method: "POST",
   });
   if (!response.ok) {
     throw new Error(`Failed to create auction: ${response.statusText}`);
@@ -106,9 +97,7 @@ export async function createAuction(
 }
 
 export async function getAuctionOffers(auctionId: string): Promise<Offer[]> {
-  const response = await fetch(
-    `${process.env.DARKBAY_API_URL}/auctions/${auctionId}/offers`,
-  );
+  const response = await fetchAPI(`/auctions/${auctionId}/offers`, {});
 
   if (!response.ok) {
     throw new Error(`Failed to fetch offers: ${response.statusText}`);
