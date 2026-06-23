@@ -1,3 +1,5 @@
+import { fetchAPI } from "./fetchAPI";
+
 export type ActionResult<T> =
   | { success: true; data: T }
   | { success: false; error: string };
@@ -16,11 +18,8 @@ export async function registerAction(
   username: string,
   password: string,
 ): Promise<ActionResult<UserResponse>> {
-  const response = await fetch(`${process.env.DARKBAY_API_URL}/auth/register`, {
+  const response = await fetchAPI("/auth/register", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify({ username, password }),
   });
 
@@ -40,11 +39,8 @@ export async function loginAction(
   username: string,
   password: string,
 ): Promise<ActionResult<AuthResponse>> {
-  const response = await fetch(`${process.env.DARKBAY_API_URL}/auth/login`, {
+  const response = await fetchAPI("/auth/login", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify({ username, password }),
   });
 
