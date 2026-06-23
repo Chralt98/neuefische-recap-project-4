@@ -50,7 +50,7 @@ export default async function AuctionDetailPage({
       </Card>
 
       <Link
-        href="/auction-list/bid"
+        href={`/auction-list/${auction.id}/bid`}
         className={buttonVariants({ variant: "outline", size: "lg" })}
       >
         Place a bid

@@ -6,8 +6,8 @@ import {
   type ActionResult,
 } from "@/lib/authActions";
 import {
-  Auction,
   createAuction as createAuctionService,
+  placeOffer,
 } from "@/lib/services/auctionsService";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
@@ -82,4 +82,16 @@ export async function createAuction(formData: FormData): Promise<void> {
     throw new Error("Failed to create auction");
   }
   revalidatePath("/auction-list");
+}
+
+export async function placeBid(formData: FormData): Promise<void> {
+  const amount = parseFloat(formData.get("amount") as string);
+  const auctionId = formData.get("auctionId") as string;
+
+  const result = await placeOffer(auctionId, amount);
+  if (!result) {
+    throw new Error("Failed to place bid");
+  }
+  revalidatePath(`/auction-list/${auctionId}`);
+  redirect(`/auction-list/${auctionId}`);
 }
