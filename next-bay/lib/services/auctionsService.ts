@@ -47,6 +47,10 @@ export type Offer = {
   auctionId: string;
 };
 
+export type ServiceResult<T> =
+  | { success: true; data: T }
+  | { success: false; error: string };
+
 export async function getAuctions(
   filter: QueryAuctionsOptions,
 ): Promise<Auction[]> {
@@ -110,18 +114,19 @@ export async function getAuctionOffers(auctionId: string): Promise<Offer[]> {
 export async function placeOffer(
   auctionId: string,
   amount: number,
-): Promise<Offer> {
+): Promise<ServiceResult<Offer>> {
   const response = await fetchAPI(`/auctions/${auctionId}/offers`, {
     method: "POST",
     body: JSON.stringify({ amount }),
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to place offer: ${response.statusText}`);
+    const error = await response.json();
+    return { success: false, error: error.message ?? "Failed to place offer" };
   }
 
   const offer = (await response.json()) as Offer;
-  return offer;
+  return { success: true, data: offer };
 }
 
 // Design question: Why route every backend call through one server-side module instead of calling fetch inside each component? Think about where your API URL and, later, your auth token need to live.

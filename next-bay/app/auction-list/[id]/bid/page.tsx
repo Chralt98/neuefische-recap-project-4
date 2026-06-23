@@ -34,7 +34,11 @@ export default function BidPage({
     const formData = new FormData();
     formData.append("auctionId", id);
     formData.append("amount", data.amount.toString());
-    await placeBid(formData);
+    const result = await placeBid(formData);
+    if (!result.success) {
+      alert(result.error);
+      return;
+    }
   };
 
   return (
