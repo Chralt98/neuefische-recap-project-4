@@ -11,6 +11,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
+import { buttonVariants } from "@/components/ui/button";
 
 export default async function AuctionDetailPage({
   params,
@@ -47,6 +48,13 @@ export default async function AuctionDetailPage({
           <p>Created At: {auction.createdAt.toString()}</p>
         </CardContent>
       </Card>
+
+      <Link
+        href="/auction-list/bid"
+        className={buttonVariants({ variant: "outline", size: "lg" })}
+      >
+        Place a bid
+      </Link>
 
       <Card>
         <CardHeader>

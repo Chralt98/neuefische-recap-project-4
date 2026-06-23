@@ -8,6 +8,7 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
+import { buttonVariants } from "@/components/ui/button";
 
 /*
 This is about where you store UI state like the current page number or filter selections.
@@ -54,29 +55,34 @@ export default async function AuctionList({
   });
 
   return (
-    // grid: CSS grid layout
-    // gap-4: 16px gap between grid items
-    // sm:grid-cols-2: 2 columns at 640px+
-    // lg:grid-cols-3: 3 columns at 1024px+
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {auctions.map((auction) => (
-        <Card key={auction.id}>
-          <CardHeader>
-            <CardTitle>{auction.title}</CardTitle>
-            <CardDescription>Sold by {auction.seller}</CardDescription>
-          </CardHeader>
-          {/* grid gap-2: stack items vertically with 8px spacing */}
-          <CardContent className="grid gap-2">
-            <p>Status: {auction.status}</p>
-            <p>Current Price: {auction.currentPrice}</p>
-            <p>Starting Price: {auction.startingPrice}</p>
-            <p>End Date: {auction.endDate.toString()}</p>
-          </CardContent>
-          <CardFooter>
-            <Link href={`/auction-list/${auction.id}`}>View Details</Link>
-          </CardFooter>
-        </Card>
-      ))}
+    <div>
+      <Link
+        href="/auction-list/new"
+        className={buttonVariants({ variant: "outline", size: "lg" })}
+      >
+        Create a new auction
+      </Link>
+      <h1 className="text-2xl font-bold my-4">Auction List</h1>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {auctions.map((auction) => (
+          <Card key={auction.id}>
+            <CardHeader>
+              <CardTitle>{auction.title}</CardTitle>
+              <CardDescription>Sold by {auction.seller}</CardDescription>
+            </CardHeader>
+            {/* grid gap-2: stack items vertically with 8px spacing */}
+            <CardContent className="grid gap-2">
+              <p>Status: {auction.status}</p>
+              <p>Current Price: {auction.currentPrice}</p>
+              <p>Starting Price: {auction.startingPrice}</p>
+              <p>End Date: {auction.endDate.toString()}</p>
+            </CardContent>
+            <CardFooter>
+              <Link href={`/auction-list/${auction.id}`}>View Details</Link>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }
